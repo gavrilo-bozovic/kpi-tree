@@ -154,22 +154,31 @@ textarea#node-desc {
 }
 textarea#node-desc:focus { border-color: var(--accent); outline: none; }
 
-.rows-head, .row { display: grid; grid-template-columns: 10px minmax(0, 1fr) 58px 56px; gap: 8px; align-items: start; }
-.rows-head { font-size: 11px; color: var(--muted); padding: 0 2px; }
-.rows-head .r { text-align: right; padding-right: 6px; }
+.rows-head, .row { display: grid; grid-template-columns: 10px minmax(0, 1fr) 58px; gap: 8px; align-items: start; }
+.rows-head { font-size: 11px; color: var(--muted); padding: 0 0 0 2px; }
+.rows-head .r { text-align: right; padding-right: 1px; }
 ol.rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
-.row { padding: 3px 2px; border-radius: 7px; }
-.row.hl { background: var(--surface-2); }
+.row { --row-bg: var(--surface); position: relative; padding: 3px 0 3px 2px; border-radius: 7px; background: var(--row-bg); }
+.row.hl { --row-bg: var(--surface-2); }
 .sw { width: 10px; height: 10px; border-radius: 3px; margin-top: 9px; }
 .row textarea, .row input { min-width: 0; border: 1px solid transparent; background: transparent; border-radius: 5px; padding: 4px 6px; line-height: 1.35; }
 .row textarea { display: block; width: 100%; box-sizing: border-box; }
 .row textarea:hover, .row input:hover { border-color: var(--line); }
 .row textarea:focus, .row input:focus { border-color: var(--accent); outline: none; background: var(--bg); }
 .row input[aria-invalid="true"] { border-color: var(--danger); }
-.r-w { text-align: right; font-family: var(--font-mono); font-size: 12.5px; width: 100%; box-sizing: border-box; -moz-appearance: textfield; }
+.r-w { text-align: right; font-family: var(--font-mono); font-size: 12.5px; width: 100%; box-sizing: border-box; padding-right: 1px !important; -moz-appearance: textfield; }
 .r-w::-webkit-inner-spin-button, .r-w::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
-.r-act { display: flex; justify-content: flex-end; gap: 2px; opacity: 0; transition: opacity .12s; }
-.row:hover .r-act, .row:focus-within .r-act { opacity: 1; }
+/* Row actions float over the end of the name, left of the weight, only while the row is hovered or focused. */
+.r-act {
+  position: absolute; top: 4px; right: 66px; display: flex; gap: 2px; padding-left: 22px;
+  background: linear-gradient(to right, transparent, var(--row-bg) 20px);
+  opacity: 0; pointer-events: none; transition: opacity .12s;
+}
+.row:hover .r-act { opacity: 1; pointer-events: auto; }
+.row:has(.r-name:focus) .r-act, .row:has(.r-w:focus) .r-act { opacity: 0; pointer-events: none; }
+.r-act:focus-within { opacity: 1 !important; pointer-events: auto !important; }
+.r-act .ib { background: var(--row-bg); }
+.r-act .ib:hover { background: var(--line); }
 .ib { width: 26px; height: 26px; display: inline-grid; place-items: center; border: 0; background: none; border-radius: 6px; cursor: pointer; color: var(--muted); position: relative; }
 .ib:hover { background: var(--surface-2); color: var(--fg); }
 .ib.del:hover { color: var(--danger); }
@@ -307,7 +316,7 @@ ol.rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
           <span class="label">Contributors</span>
           <button class="linkbtn" id="btn-sort" type="button">Sort by weight</button>
         </div>
-        <div class="rows-head" aria-hidden="true"><span></span><span>Name</span><span class="r">Weight</span><span></span></div>
+        <div class="rows-head" aria-hidden="true"><span></span><span>Name</span><span class="r">Weight</span></div>
         <ol class="rows" id="rows"></ol>
         <div class="row-actions">
           <button class="btn" id="btn-add" type="button">

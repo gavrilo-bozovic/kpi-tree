@@ -392,15 +392,6 @@ ol.rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
   </div>
 </div>
 
-<div class="overlay" id="hello-overlay">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="hello-title">
-    <h2 id="hello-title">Hello Lena</h2>
-    <div class="actions">
-      <button class="btn primary" id="hello-ok" type="button">Start</button>
-    </div>
-  </div>
-</div>
-
 <div class="toast" id="toast" role="status" hidden><span id="toast-msg"></span><button id="toast-act" type="button" hidden></button></div>
 <div class="dropzone" id="dropzone" hidden>Drop a .kpi file to open it</div>
 
@@ -1322,16 +1313,7 @@ ol.rows { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
   }
 
   /* ---------- Keyboard ---------- */
-  const closeHello = () => { $('#hello-overlay').hidden = true; };
-  $('#hello-ok').addEventListener('click', closeHello);
-  $('#hello-overlay').addEventListener('click', e => { if (e.target.id === 'hello-overlay') closeHello(); });
-  $('#hello-ok').focus();
-
   document.addEventListener('keydown', e => {
-    if (!$('#hello-overlay').hidden) {
-      if (e.key === 'Escape' || e.key === 'Enter') { e.preventDefault(); closeHello(); }
-      return;
-    }
     if (!$('#overlay').hidden) {
       if (e.key === 'Escape') { e.preventDefault(); closeModal(false); }
       return;
